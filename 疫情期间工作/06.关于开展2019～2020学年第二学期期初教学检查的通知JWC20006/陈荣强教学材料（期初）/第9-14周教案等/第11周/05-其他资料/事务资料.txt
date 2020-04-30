@@ -1,0 +1,58 @@
+http://www.cnblogs.com/ymy124/p/3718439.html
+
+ MySQL的事务处理在处理实际问题中有着广泛且重要的应用，最常见的应用如银行转账业务、电子商务支付业务等等。但是，值得注意的是，MySQL的事务处理功能在MYSIAM存储引擎中是不支持的，在InnoDB存储引擎中是支持的。
+
+原子性：事务处理时里面的几个DML语句是一个整体，不能单独执行其中一条，要么全部成功，要么全部结束  
+一致性：确保数据库正确地改变状态后，成功提交的事务.要么都是改变前的状态，要么都是改变后的状态。  
+隔离性：一个数据库中会存在很多的事务处理，每个事务之间不会相互影响。一个事务处理后的结果，影响了其他事务，那么其他事务会撤回。事务隔离、彼此独立的和透明的
+持久性：事务成功提交后则数据就永久被修改并保留。如果是回滚了，则相当于没有操作过。事务结束后，必须重新启动一个新的事务才能修改数据。
+
+mysql> use test;
+    Database changed
+    mysql> CREATE TABLE `dbtest`(
+    -> id int(4)
+    -> ) TYPE=INNODB;
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> select * from dbtest
+    -> ;
+Empty set (0.01 sec)
+
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into dbtest values(5);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into dbtest value(6);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from dbtest;
++------+
+| id   |
++------+
+|    5 |
+|    6 |
++------+
+2 rows in set (0.00 sec)
+
+mysql> begin;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into dbtest values(7);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from dbtest;
++------+
+| id   |
++------+
+|    5 |
+|    6 |
++------+
+2 rows in set (0.00 sec)

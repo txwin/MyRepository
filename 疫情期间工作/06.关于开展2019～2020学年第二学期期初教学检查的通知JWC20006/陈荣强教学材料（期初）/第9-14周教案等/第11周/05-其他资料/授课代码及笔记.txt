@@ -1,0 +1,53 @@
+数据恢复和备份
+1 （1） mysqldump备份   
+**：mysqldump和mysql同级的命令
+
+mysqldump --help|more  帮助你查看mysqldump的可选参数
+
+
+（2）source命令恢复
+mysql>use test;
+mysql>source 脚本路径
+
+mysql命令恢复
+mysql -uroot -pkgc test<脚本路径
+
+2  使用SQLyog工具来备份和恢复
+注意实现:打钩的选项看清楚，别影响恢复
+
+3  使用SQL命令方式来备份和恢复
+
+#将school数据库student表中的学号、姓名两列备份出去
+USE school;
+
+#注意：备份出去的文件不可以提前存在
+SELECT studentno,studentname INTO OUTFILE 'h:/chenxuan/student.sql' FROM student;
+
+#将备份出去的数据恢复到test数据库的stutab表中来
+USE test;
+CREATE TABLE stutab(
+	id INT(4),
+	sname VARCHAR(20)
+)
+
+LOAD DATA INFILE 'h:/chenxuan/student.sql' INTO TABLE stutab(id,sname);
+
+
+SELECT * FROM stutab;
+
+整体回顾：
+mysql数据库环境搭建（环境变量  目录）
+mysql命令行使用（开启服务、连接数据库、恢复和备份、SQL语句。。。。。。）
+DDL（Create、drop）
+DML（insert     update    delete）
+DQL(select   where  join  group  having  order  limit.....)
+事务 索引
+数据恢复和备份
+
+
+
+
+
+
+
+
